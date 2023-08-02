@@ -14,7 +14,7 @@ let userSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  birthday: {
+  birthDate: {
     type: Date,
     required: true,
   },

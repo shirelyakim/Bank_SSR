@@ -10,4 +10,16 @@ route.get('/', (req, res)=>{
     res.send("Welcome to root URL of Server");
 });
 
+// Users 
+route.post('/api/users', userController.create);
+
+
+// Transactions (is '/api/users' right? )
+route.post('/api/users', transactionController.create)
+
+// Accounts (is '/api/users' right? )
+route.post('/api/users', accountController.create)
+
 module.exports = route;
+
+
