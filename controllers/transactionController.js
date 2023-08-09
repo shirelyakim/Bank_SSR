@@ -29,3 +29,23 @@ exports.create = (req, res) => {
         });
 };
   
+exports.getId = (req, res) => {
+  const id = req.params.id;
+  transactionModel
+    .findById(id)
+    .then((transaction) => {
+      if (!transaction) {
+        res
+          .status(404)
+          .send({ message: 'Not found transaction with id ' + id });
+      } else {
+        res.send(transaction);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          'Error retrieving transaction with id ' + id + '\nError: ' + err,
+      });
+    });
+};

@@ -26,4 +26,21 @@ exports.create = (req, res) => {
           });
         });
 };
-  
+ 
+exports.getId = (req, res) => {
+  const id = req.params.id;
+  coinModel
+    .findById(id)
+    .then((account) => {
+      if (!account) {
+        res.status(404).send({ message: 'Not found coin with id ' + id });
+      } else {
+        res.send(account);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: 'Error retrieving coin with id ' + id + ', Error:' + err.message});
+    });
+};
+
+
