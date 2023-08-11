@@ -17,12 +17,16 @@ route.get('/api/users', userController.get);
 route.post('/api/users/:id', userController.update);
 route.delete('/api/users/:id', userController.delete);
 
-// Transactions (is '/api/users' right? )
-route.post('/api/users', transactionController.create)
+// Transactions (is '/api/transactions' right? )
+route.post('/api/transactions', transactionController.create)
+route.get('/api/transactions/:id', transactionController.getId);
+route.get('/api/transactions', transactionController.get);
 
-// Accounts (is '/api/users' right? )
-route.post('/api/users', accountController.create)
+// Accounts (is '/api/accounts' right? )
+route.post('/api/accounts', accountController.create)
+route.get('/api/accounts/:id', accountController.getId);
+route.get('/api/accounts', accountController.get);
+route.post('/api/accounts/:id', accountController.update);
+route.delete('/api/accounts/:id', accountController.delete);
 
 module.exports = route;
-
-
