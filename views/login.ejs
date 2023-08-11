@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Screen</title>
+  <link rel="stylesheet" href="assets/css/login.css">
+  <script src="assets/js/login.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form id="login-form" onsubmit="login(event)">
+      <label for="username">Username:</label>
+      <input type="text" name="username" required>
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" required>
+
+      <input  type="submit" value="Login"> <!-- Changed type to "button" -->
+      <label id="error" class="error"></label>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,4 +1,5 @@
 const userModel = require('../models/user');
+const axios = require('axios');
 
 exports.create = async (req, res) => {
   try {
@@ -23,7 +24,7 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.getById = async (req, res) => {
+exports.getId = async (req, res) => {
   try {
     const id = req.params.id;
     const user = await userModel.findById(id);
@@ -91,7 +92,6 @@ exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
     const data = await userModel.findByIdAndDelete(id);
-
     if (!data) {
       return res.status(404).send({ message: `Cannot delete user with id ${id}` });
     }
@@ -101,3 +101,25 @@ exports.delete = async (req, res) => {
     res.status(500).send({ message: `Could not delete user with id ${id}` });
   }
 };
+
+exports.login = async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  try{
+    const user = (await axios.get(`http://localhost:5000/api/users?userName=${username}`)).data[0]
+    if (user.password === password){
+        req.session.user_id = user._id
+        res.status(200).send("OK")
+    }
+    else{
+        res.status(404).send("Wrong username or password")
+    }
+  } catch (err) {
+    res.status(500).send(`failed to login with: ${err}`);
+  }
+}
+
+exports.logout = async (req, res) => {
+  req.session.destroy()
+  res.redirect("/")
+}

@@ -3,6 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const connectDB = require('./db');
+const session = require('express-session');
 const app = express();
 
 // load environment file
@@ -19,6 +20,14 @@ app.use(bodyParser.json()).use(
 
 // set view engine
 app.set('view engine', 'ejs');
+
+app.use('/assets', express.static(path.resolve(__dirname, 'assets')));
+
+app.use(session({
+  secret : '1234',
+  resave : true,
+  saveUninitialized : true
+}));
 
 // load routers
 app.use('/', require('./router'));
