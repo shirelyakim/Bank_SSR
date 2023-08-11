@@ -18,7 +18,7 @@ exports.create = (req, res) => {
     transaction
       .save(transaction)
       .then((data) => {
-        res.status(200);
+        res.status(200).send({message: "OK"});
         })
         .catch((err) => {
           res.status(500).send({

@@ -16,7 +16,7 @@ exports.create = (req, res) => {
     account
       .save(account)
       .then((data) => {
-        res.status(200);
+        res.status(200).send({message: "OK"});
         })
         .catch((err) => {
           res.status(500).send({
@@ -26,4 +26,4 @@ exports.create = (req, res) => {
           });
         });
 };
-  
+
