@@ -1,136 +1,103 @@
 const userModel = require('../models/user');
 
-exports.create = (req, res) => {
-    // validate request
+exports.create = async (req, res) => {
+  try {
     if (!req.body) {
-      res.status(400).send({ message: 'Content can not be empty!' });
-      return;
+      return res.status(400).send({ message: 'Content cannot be empty!' });
     }
-  
-    // new user
+
     const user = new userModel({
       userName: req.body.userName,
       password: req.body.password,
       isAdmin: req.body.isAdmin,
-      birthDate: new Date(req.body.birthDate), 
+      birthDate: new Date(req.body.birthDate),
       joinDate: Date.now(),
     });
-    console.log(user)
 
-    user
-      .save(user)
-      .then((data) => {
-        res.status(200).send({message: "OK"});
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-                err.message ||
-                'Some error occurred while creating a create operation',
-          });
-        });
+    await user.save();
+    res.status(200).send({ message: 'OK' });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || 'Error occurred while creating a user',
+    });
+  }
 };
 
-exports.getId = (req, res) => {
+exports.getById = async (req, res) => {
+  try {
     const id = req.params.id;
-    userModel
-      .findById(id)
-      .then((user) => {
-        if (!user) {
-          res.status(404).send({ message: 'Not found user with id ' + id });
-        } else {
-          res.send(user);
-        }
-      })
-      .catch((err) => {
-        res.status(500).send({ message: 'Error retrieving user with id ' + id + ', Error:' + err.message});
-      });
+    const user = await userModel.findById(id);
+
+    if (!user) {
+      return res.status(404).send({ message: `Not found user with id ${id}` });
+    }
+
+    res.send(user);
+  } catch (err) {
+    res.status(500).send({ message: `Error retrieving user with id ${id}, Error: ${err.message}` });
+  }
 };
 
-exports.get = (req, res) => {
+exports.get = async (req, res) => {
+  try {
     const query = req.query;
+    let users;
+
     if (Object.keys(query).length === 0) {
-      userModel
-        .find()
-        .then((user) => {
-          res.send(user);
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-              err.message || 'Error Occurred while retriving user information',
-          });
-        });
+      users = await userModel.find();
     } else {
-      let parsedQuery = {};
-      const userName = query.userName;
-      if (userName) {
-        parsedQuery['userName'] = userName;
+      const parsedQuery = {};
+      if (query.userName) {
+        parsedQuery['userName'] = query.userName;
       }
-      const isAdmin = query.isAdmin;
-      if (isAdmin) {
-        parsedQuery['isAdmin'] = isAdmin;
+      if (query.isAdmin) {
+        parsedQuery['isAdmin'] = query.isAdmin;
       }
       console.log(`searching users: ${JSON.stringify(parsedQuery)}`);
-  
-      userModel
-        .find(parsedQuery)
-        .then((user) => {
-          if (!user) {
-            res
-              .status(404)
-              .send({ message: 'Not found users with the following query' });
-          } else {
-            res.send(user);
-          }
-        })
-        .catch((err) => {
-          res
-            .status(500)
-            .send({ message: 'Error retrieving users with the following query' });
-        });
+
+      users = await userModel.find(parsedQuery);
     }
+
+    if (users.length === 0) {
+      return res.status(404).send({ message: 'No users found with the given query' });
+    }
+
+    res.send(users);
+  } catch (err) {
+    res.status(500).send({ message: `Error retrieving users: ${err.message}` });
+  }
 };
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
+  try {
     if (!req.body) {
-      return res.status(400).send({ message: 'Data to update can not be empty' });
+      return res.status(400).send({ message: 'Data to update cannot be empty' });
     }
-  
+
     const id = req.params.id;
-    userModel
-      .findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-      .then((data) => {
-        if (!data) {
-          res.status(404).send({
-            message: `Cannot Update user with ${id}. Maybe transaction not found!`,
-          });
-        } else {
-            res.status(200).send({ message: 'upated'})
-        }
-      })
-      .catch((err) => {
-        res.status(500).send({ message: 'Error Update user information' });
-      });
+    const data = await userModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false });
+
+    if (!data) {
+      return res.status(404).send({ message: `Cannot update user with id ${id}` });
+    }
+
+    res.status(200).send({ message: 'Updated' });
+  } catch (err) {
+    res.status(500).send({ message: 'Error updating user information' });
+  }
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
+  try {
     const id = req.params.id;
-  
-    userModel
-      .findByIdAndDelete(id)
-      .then((data) => {
-        if (!data) {
-          res.status(404).send({
-            message: `Cannot Delete user with id ${id}. Maybe id is wrong`,
-          });
-        } else {
-            res.status(200).send({ message: 'deleted'})
-        }
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: 'Could not delete user with id=' + id,
-        });
-      });
+    const data = await userModel.findByIdAndDelete(id);
+
+    if (!data) {
+      return res.status(404).send({ message: `Cannot delete user with id ${id}` });
+    }
+
+    res.status(200).send({ message: 'Deleted' });
+  } catch (err) {
+    res.status(500).send({ message: `Could not delete user with id ${id}` });
+  }
 };

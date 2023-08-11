@@ -1,128 +1,103 @@
 const accountModel = require('../models/account');
 
-exports.create = (req, res) => {
-    // validate request
+exports.create = async (req, res) => {
+  try {
     if (!req.body) {
-      res.status(400).send({ message: 'Content can not be empty!' });
-      return;
+      return res.status(400).send({ message: 'Content can not be empty!' });
     }
   
-    // new account
     const account = new accountModel({
       userID: req.body.userID,
       balance: 0,
     });
 
-    account
-      .save(account)
-      .then((data) => {
-        res.status(200).send({message: "OK"});
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-                err.message ||
-                'Some error occurred while creating a create operation',
-          });
-        });
-};
-
-exports.getId = (req, res) => {
-  const id = req.params.id;
-  accountModel
-    .findById(id)
-    .then((account) => {
-      if (!account) {
-        res.status(404).send({ message: 'Not found account with id ' + id });
-      } else {
-        res.send(account);
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: 'Error retrieving account with id ' + id + ', Error:' + err.message});
+    await account.save();
+    res.status(200).send({ message: 'OK' });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || 'Some error occurred while creating an account',
     });
+  }
 };
 
-exports.get = (req, res) => {
-  const query = req.query;
-  if (Object.keys(query).length === 0) {
-    accountModel
-      .find()
-      .then((account) => {
-        res.send(account);
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message || 'Error Occurred while retriving account information',
-        });
-      });
-  } else {
-    let parsedQuery = {};
-    const userID = query.userID;
-    if (userID) {
-      parsedQuery['userID'] = userID;
+exports.getId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const account = await accountModel.findById(id);
+    
+    if (!account) {
+      res.status(404).send({ message: 'Not found account with id ' + id });
+    } else {
+      res.send(account);
     }
-    console.log(`searching accounts: ${JSON.stringify(parsedQuery)}`);
-
-    accountModel
-      .find(parsedQuery)
-      .then((account) => {
-        if (!account) {
-          res
-            .status(404)
-            .send({ message: 'Not found accounts with the following query' });
-        } else {
-          res.send(account);
-        }
-      })
-      .catch((err) => {
-        res
-          .status(500)
-          .send({ message: 'Error retrieving accounts with the following query' });
-      });
+  } catch (err) {
+    res.status(500).send({ message: 'Error retrieving account with id ' + id + ', Error:' + err.message });
   }
 };
 
-exports.update = (req, res) => {
-  if (!req.body) {
-    return res.status(400).send({ message: 'Data to update can not be empty' });
-  }
+exports.get = async (req, res) => {
+  try {
+    const query = req.query;
+    let accounts;
 
-  const id = req.params.id;
-  accountModel
-    .findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot Update account with ${id}. Maybe transaction not found!`,
-        });
-      } else {
-          res.status(200).send({ message: 'upated'})
+    if (Object.keys(query).length === 0) {
+      accounts = await accountModel.find();
+    } else {
+      let parsedQuery = {};
+      const userID = query.userID;
+
+      if (userID) {
+        parsedQuery['userID'] = userID;
       }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: 'Error Update account information' });
-    });
+
+      console.log(`searching accounts: ${JSON.stringify(parsedQuery)}`);
+      accounts = await accountModel.find(parsedQuery);
+    }
+
+    if (accounts.length === 0) {
+      res.status(404).send({ message: 'No accounts found with the given query' });
+    } else {
+      res.send(accounts);
+    }
+  } catch (err) {
+    res.status(500).send({ message: 'Error retrieving account information: ' + err.message });
+  }
 };
 
-exports.delete = (req, res) => {
-  const id = req.params.id;
+exports.update = async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(400).send({ message: 'Data to update can not be empty' });
+    }
 
-  accountModel
-    .findByIdAndDelete(id)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Cannot Delete account with id ${id}. Maybe id is wrong`,
-        });
-      } else {
-          res.status(200).send({ message: 'deleted'})
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: 'Could not delete account with id=' + id,
+    const id = req.params.id;
+    const data = await accountModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false });
+
+    if (!data) {
+      res.status(404).send({
+        message: `Cannot Update account with ${id}. Maybe account not found!`,
       });
-    });
+    } else {
+      res.status(200).send({ message: 'Updated' });
+    }
+  } catch (err) {
+    res.status(500).send({ message: 'Error updating account information: ' + err.message });
+  }
+};
+
+exports.delete = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await accountModel.findByIdAndDelete(id);
+
+    if (!data) {
+      res.status(404).send({
+        message: `Cannot Delete account with id ${id}. Maybe id is wrong`,
+      });
+    } else {
+      res.status(200).send({ message: 'Deleted' });
+    }
+  } catch (err) {
+    res.status(500).send({ message: 'Could not delete account with id=' + id });
+  }
 };

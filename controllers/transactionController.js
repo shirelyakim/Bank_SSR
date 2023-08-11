@@ -42,63 +42,47 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.getId = (req, res) => {
-  const id = req.params.id;
-  transactionModel
-    .findById(id)
-    .then((transaction) => {
-      if (!transaction) {
-        res.status(404).send({ message: 'Not found transaction with id ' + id });
-      } else {
-        res.send(transaction);
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: 'Error retrieving transaction with id ' + id + ', Error:' + err.message});
-    });
+exports.getId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const transaction = await transactionModel.findById(id);
+
+    if (!transaction) {
+      return res.status(404).send({ message: `Not found transaction with id ${id}` });
+    }
+
+    res.send(transaction);
+  } catch (err) {
+    res.status(500).send({ message: `Error retrieving transaction with id ${id}, Error: ${err.message}` });
+  }
 };
 
-exports.get = (req, res) => {
-  const query = req.query;
-  if (Object.keys(query).length === 0) {
-    transactionModel
-      .find()
-      .then((transaction) => {
-        res.send(transaction);
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message || 'Error Occurred while retriving transaction information',
-        });
-      });
-  } else {
-    let parsedQuery = {};
-    const sourceAccountID = query.sourceAccountID;
-    if (sourceAccountID) {
-      parsedQuery['sourceAccountID'] = sourceAccountID;
-    }
-    const destenationAccountID = query.destenationAccountID;
-    if (destenationAccountID) {
-      parsedQuery['destenationAccountID'] = destenationAccountID;
-    }
-    console.log(`searching transactions: ${JSON.stringify(parsedQuery)}`);
+exports.get = async (req, res) => {
+  try {
+    const query = req.query;
+    let transactions;
 
-    transactionModel
-      .find(parsedQuery)
-      .then((transaction) => {
-        if (!transaction) {
-          res
-            .status(404)
-            .send({ message: 'Not found transactions with the following query' });
-        } else {
-          res.send(transaction);
-        }
-      })
-      .catch((err) => {
-        res
-          .status(500)
-          .send({ message: 'Error retrieving transactions with the following query' });
-      });
+    if (Object.keys(query).length === 0) {
+      transactions = await transactionModel.find();
+    } else {
+      const parsedQuery = {};
+      if (query.sourceAccountID) {
+        parsedQuery['sourceAccountID'] = query.sourceAccountID;
+      }
+      if (query.destenationAccountID) {
+        parsedQuery['destenationAccountID'] = query.destenationAccountID;
+      }
+      console.log(`searching transactions: ${JSON.stringify(parsedQuery)}`);
+
+      transactions = await transactionModel.find(parsedQuery);
+    }
+
+    if (transactions.length === 0) {
+      return res.status(404).send({ message: 'No transactions found with the given query' });
+    }
+
+    res.send(transactions);
+  } catch (err) {
+    res.status(500).send({ message: 'Error retrieving transactions: ' + err.message });
   }
 };
