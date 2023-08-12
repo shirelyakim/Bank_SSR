@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('includes/imports') %>
+        <!-- <title>Cryptofolio | About </title> -->
+        <script src="assets/js/home.js"></script>
+    </head>
+    <body>
+        <%- include('includes/nav') %>
+        <div class="content">
+            <div class="col-8">
+                <h1 class="slide-left">Welcome back <%= user.userName %> </h1>
+                <br>
+                <h2 class="slide-left"> Total Balance: <%= user.balance %>₪</h2>
+                <br>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <a class="btn border-shadow update btn-light p-2" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newTransaction">
+                  <i class="bi bi-file-earmark-plus"></i>
+                </a>
+            </div>
+            <table class="table text-white">
+                <thead class="thead-light">
+                <tr>
+                  <th>Date</th>
+                  <th>Username</th>
+                  <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody id="transactionsTable">
+                    <% for(var i = 0; i < transactions.length; i++) { %>
+                    <tr>
+                        <td><%= transactions[i].date %></td>
+                        <td><%= transactions[i].username %></td>
+                        <td><%= transactions[i].amount %>₪</td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </body>
+<!-- The Modal -->
+<div class="modal" id="newTransaction">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">New Transaction</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form id="createTransaction" onsubmit="newTransaction(event)">
+                <div class="modal-body">
+                    <input type="hidden" class="w-25" name="username" value=<%= user.userName %> required>
+                    <input type="hidden" class="w-25" name="src" value=<%= session.user_id %> required>
+                    <label for="shortName" class="text-dark w-50">Username</label>
+                    <input type="text" class="w-25"  name="dst" onkeyup="return validateUsername(this)" placeholder="Username" required>
+                    <label for="shortName" class="text-dark w-50">Amount</label>
+                    <input type="number" class="w-25"  name="amount" onkeyup="return validateAmount(this)" placeholder="10" required>
+                </div>
+                <div class="modal-footer">
+                  <div class="form-group">
+                      <button type="Update" class="btn btn-danger update">Save</button>
+                  </div>
+              </div>
+            </form>
+        </div>
+  
+        <!-- Modal footer -->
+      </div>
+    </div>
+  </div>
+</html>

@@ -5,34 +5,50 @@ exports.create = async (req, res) => {
   try {
     // Validate request
     if (!req.body) {
-      res.status(400).send({ message: 'Content cannot be empty!' });
-      return;
+      return res.status(400).send({ message: 'Content cannot be empty!' });
     }
 
     // Create new transaction
     const transaction = new transactionModel({
-      sourceAccountID: req.body.sourceAccountID,
-      destenationAccountID: req.body.destenationAccountID,
+      sourceUserID: req.body.sourceUserID,
+      destenationUserID: req.body.destenationUserID,
       amount: req.body.amount,
       date: Date.now(),
     });
+    let srcBalance
+    let dstBalance 
+    try {
+      // Fetch source account
+      const src = await axios.get(`http://localhost:5000/api/users/${transaction.sourceUserID}`);
+      srcBalance = src.data.balance;
 
+      // Update source account balance
+    } catch (error) {
+      return res.status(404).send("Couldn't find source user");
+    }
+
+    try {
+      // Fetch destination account
+      const dst = await axios.get(`http://localhost:5000/api/users/${transaction.destenationUserID}`);
+      dstBalance = dst.data.balance;
+
+      // Update destination account balance
+    } catch (error) {
+      return res.status(404).send("Couldn't find destination user");
+    }
     // Save the transaction
     await transaction.save();
-
-    // Fetch source account
-    const src = await axios.get(`http://localhost:5000/api/accounts/${transaction.sourceAccountID}`);
-    const srcBalance = src.data.balance;
-
-    // Update source account balance
-    await axios.post(`http://localhost:5000/api/accounts/${transaction.sourceAccountID}`, { balance: srcBalance - transaction.amount });
-
-    // Fetch destination account
-    const dst = await axios.get(`http://localhost:5000/api/accounts/${transaction.destenationAccountID}`);
-    const dstBalance = dst.data.balance;
-
-    // Update destination account balance
-    await axios.post(`http://localhost:5000/api/accounts/${transaction.destenationAccountID}`, { balance: dstBalance + transaction.amount });
+    try{
+    await axios.post(`http://localhost:5000/api/users/${transaction.sourceUserID}`, { balance: srcBalance - transaction.amount });
+    }catch (error) {
+      console.log(error)
+      return res.status(404).send("Couldn't update src users balance");
+    }
+    try{
+      await axios.post(`http://localhost:5000/api/users/${transaction.destenationUserID}`, { balance: dstBalance + transaction.amount });
+    }catch (error) {
+      return res.status(404).send("Couldn't update dst users balance");
+    }
 
     res.status(200).send({ message: 'OK' });
   } catch (err) {
@@ -48,12 +64,12 @@ exports.getId = async (req, res) => {
     const transaction = await transactionModel.findById(id);
 
     if (!transaction) {
-      return res.status(404).send({ message: `Not found transaction with id ${id}` });
+      return res.status(404).send({ message: `Not found transaction with id` });
     }
 
     res.send(transaction);
   } catch (err) {
-    res.status(500).send({ message: `Error retrieving transaction with id ${id}, Error: ${err.message}` });
+    res.status(500).send({ message: `Error retrieving transaction with id ${req.params.id}, Error: ${err.message}` });
   }
 };
 
@@ -66,11 +82,11 @@ exports.get = async (req, res) => {
       transactions = await transactionModel.find();
     } else {
       const parsedQuery = {};
-      if (query.sourceAccountID) {
-        parsedQuery['sourceAccountID'] = query.sourceAccountID;
+      if (query.sourceUserID) {
+        parsedQuery['sourceUserID'] = query.sourceUserID;
       }
-      if (query.destenationAccountID) {
-        parsedQuery['destenationAccountID'] = query.destenationAccountID;
+      if (query.destenationUserID) {
+        parsedQuery['destenationUserID'] = query.destenationUserID;
       }
       console.log(`searching transactions: ${JSON.stringify(parsedQuery)}`);
 

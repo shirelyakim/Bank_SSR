@@ -13,6 +13,7 @@ exports.create = async (req, res) => {
       isAdmin: req.body.isAdmin,
       birthDate: new Date(req.body.birthDate),
       joinDate: Date.now(),
+      balance: 0,
     });
 
     await user.save();
@@ -30,12 +31,12 @@ exports.getId = async (req, res) => {
     const user = await userModel.findById(id);
 
     if (!user) {
-      return res.status(404).send({ message: `Not found user with id ${id}` });
+      return res.status(404).send({ message: `Not found user with id` });
     }
 
     res.send(user);
   } catch (err) {
-    res.status(500).send({ message: `Error retrieving user with id ${id}, Error: ${err.message}` });
+    res.status(500).send({ message: `Error retrieving user with id, Error: ${err.message}` });
   }
 };
 
@@ -54,7 +55,6 @@ exports.get = async (req, res) => {
       if (query.isAdmin) {
         parsedQuery['isAdmin'] = query.isAdmin;
       }
-      console.log(`searching users: ${JSON.stringify(parsedQuery)}`);
 
       users = await userModel.find(parsedQuery);
     }
@@ -79,7 +79,7 @@ exports.update = async (req, res) => {
     const data = await userModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false });
 
     if (!data) {
-      return res.status(404).send({ message: `Cannot update user with id ${id}` });
+      return res.status(404).send({ message: `Cannot update user with id` });
     }
 
     res.status(200).send({ message: 'Updated' });
@@ -93,12 +93,12 @@ exports.delete = async (req, res) => {
     const id = req.params.id;
     const data = await userModel.findByIdAndDelete(id);
     if (!data) {
-      return res.status(404).send({ message: `Cannot delete user with id ${id}` });
+      return res.status(404).send({ message: `Cannot delete user with id` });
     }
 
     res.status(200).send({ message: 'Deleted' });
   } catch (err) {
-    res.status(500).send({ message: `Could not delete user with id ${id}` });
+    res.status(500).send({ message: `Could not delete user with id` });
   }
 };
 
@@ -109,10 +109,11 @@ exports.login = async (req, res) => {
     const user = (await axios.get(`http://localhost:5000/api/users?userName=${username}`)).data[0]
     if (user.password === password){
         req.session.user_id = user._id
+        req.session.admin = user.isAdmin
         res.status(200).send("OK")
     }
     else{
-        res.status(404).send("Wrong username or password")
+        res.status(404).send("Wrong Username Or Password")
     }
   } catch (err) {
     res.status(500).send(`failed to login with: ${err}`);

@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 let transactionSchema = new mongoose.Schema({
-  sourceAccountID: {
+  sourceUserID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'account',
+    ref: 'user',
     required: true,
   },
-  destenationAccountID: {
+  destenationUserID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'account',
+    ref: 'user',
     required: true,
   },
   amount: {

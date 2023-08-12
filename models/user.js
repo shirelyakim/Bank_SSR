@@ -22,6 +22,10 @@ let userSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  balance: {
+    type: Number,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('user', userSchema);

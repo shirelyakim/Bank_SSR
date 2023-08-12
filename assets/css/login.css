@@ -1,10 +1,3 @@
-body {
-  font-family: Arial, sans-serif;
-  background-image: url("static/images/DarkGliter.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .container {
   position: relative;
   width: 300px;

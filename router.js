@@ -3,7 +3,6 @@ const route = express.Router();
 
 
 //#######API#######
-const accountController = require('./controllers/accountController');
 const transactionController = require('./controllers/transactionController');
 const userController = require('./controllers/userController');
 const { default: axios } = require('axios');
@@ -20,14 +19,6 @@ route.post('/api/transactions', transactionController.create)
 route.get('/api/transactions/:id', transactionController.getId);
 route.get('/api/transactions', transactionController.get);
 
-// Accounts (is '/api/accounts' right? )
-route.post('/api/accounts', accountController.create)
-route.get('/api/accounts/:id', accountController.getId);
-route.get('/api/accounts', accountController.get);
-route.post('/api/accounts/:id', accountController.update);
-route.delete('/api/accounts/:id', accountController.delete);
-//#################
-
 //#######Home and Login#######
 route.get('/login', (req, res) => {
     if (req.session.user_id){
@@ -40,15 +31,35 @@ route.get('/login', (req, res) => {
 route.post('/login', userController.login);
 route.get('/logout', userController.logout);
 
-route.get('/', (req, res) => {
+route.get('/', async (req, res) => {
     if (req.session.user_id){
-        res.send("home")
+        let account
+        let transactions = []
+        let user = (await axios.get(`http://localhost:5000/api/users/${req.session.user_id}`)).data
+        let outTransactions
+        let inTransactions
+        try{ outTransactions = (await axios.get(`http://localhost:5000/api/transactions?sourceUserID=${req.session.user_id}`)).data
+        } catch {outTransactions = []}
+        try{ inTransactions = (await axios.get(`http://localhost:5000/api/transactions?destenationUserID=${req.session.user_id}`)).data
+        } catch {inTransactions = []}
+        var users = {};
+        let rawUsers = (await axios.get(`http://localhost:5000/api/users`)).data
+        for (let i = 0; i < rawUsers.length; i++) {
+            users[rawUsers[i]._id] = rawUsers[i] 
+        }
+        for (let i = 0; i < outTransactions.length; i++) {
+            transactions.push({"id": outTransactions[i]._id,"date": new Date(outTransactions[i].date).toLocaleDateString("en-GB"), "amount": `-${outTransactions[i].amount}`, "username": users[`${outTransactions[i].destenationUserID}`].userName})
+        }
+        for (let i = 0; i < inTransactions.length; i++) {
+            transactions.push({"id": inTransactions[i]._id,"date": new Date(inTransactions[i].date).toLocaleDateString("en-GB"), "amount": `+${inTransactions[i].amount}`, "username": users[`${inTransactions[i].sourceUserID}`].userName})
+        }
+        transactions.sort(function(a,b){return new Date(b.date) - new Date(a.date);});
+        res.render("home",{"session": req.session, "user": user, "transactions": transactions})
     }
     else{
         res.redirect("/login")
     }
 });
-//##############
 
 //#######Views#######
 

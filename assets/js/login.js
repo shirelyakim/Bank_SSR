@@ -7,7 +7,7 @@ async function login(event){
 
     const errorLabel = document.getElementById("error");
     try {
-        const response = await axios.post("/login", {
+        const response = await axios.post("http://localhost:5000/login", {
         username: username,
         password: password,
         });

@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="/assets/css/nav.css">
+<nav>
+    <div class="logo" onclick="location.href='/'">
+    <img src="/assets/img/logo.png">
+    <span>Bank SSR</span>
+    </div>
+    <ul>
+    <% if(session.admin) { %>
+        <li><a href="/admin">Admin Dashboard</a></li>
+    <% } %>
+    <li><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
