@@ -62,6 +62,13 @@ route.get('/', async (req, res) => {
 });
 
 //#######Views#######
-
+route.get('/example', (req, res) => {
+    if (req.session.user_id){
+        res.render("example",{"session": req.session})
+    }
+    else{
+        res.redirect("login")
+    }
+});
 
 module.exports = route;
