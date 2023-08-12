@@ -49,3 +49,39 @@ async function newTransaction(event){
         console.error(error);
     }
 }
+
+function filter() {
+    const fromDateInput = document.getElementById("fromDate");
+    const toDateInput = document.getElementById("toDate");
+
+    if (fromDateInput.value==="") {
+      fromDateInput.setCustomValidity("Must insert");
+      fromDateInput.reportValidity();
+      return false;
+    } else {
+      fromDateInput.setCustomValidity("");
+      fromDateInput.reportValidity();
+    }
+  
+    if (toDateInput.value==="") {
+      toDateInput.setCustomValidity("Must insert");
+      toDateInput.reportValidity();
+      return false;
+    } else {
+      toDateInput.setCustomValidity("");
+      toDateInput.reportValidity();
+    }
+    const fromDate = new Date(fromDateInput.value)
+    const toDate = new Date(toDateInput.value)
+    if (fromDate >= toDate){
+        toDateInput.setCustomValidity("To date must be bigger");
+        toDateInput.reportValidity();
+        return false;
+    }
+    else{
+        toDateInput.setCustomValidity("");
+        toDateInput.reportValidity();
+    }
+    console.log(toDate)
+    console.log(fromDate)
+  }
