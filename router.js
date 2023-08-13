@@ -71,5 +71,15 @@ route.get('/example', (req, res) => {
         res.redirect("login")
     }
 });
+//###Admin#####
+route.get('/admin', async (req, res) => {
+    if (req.session.user_id){
+        let users = (await axios.get("http://localhost:5000/api/users")).data
+        res.render("admin",{"session": req.session, "users": users})
+    }
+    else{
+        res.redirect("login")
+    }
+});
 
 module.exports = route;
