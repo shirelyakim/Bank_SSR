@@ -19,14 +19,9 @@ async function validateUsername(element){
 async function createUser(event){
   event.preventDefault();
   const form = document.getElementById("createUserForm");
-  let isAdmin
+  let isAdmin = form.isAdmin.checked;
   const username = form.username.value;
   const password = form.password.value;
-  if (form.isAdmin.value === "on"){
-   isAdmin = true
-  }else{
-    isAdmin = false
-  }
   const birthDate = form.birthDate.value;
 
   try {
