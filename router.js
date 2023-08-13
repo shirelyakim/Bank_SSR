@@ -48,12 +48,13 @@ route.get('/', async (req, res) => {
             users[rawUsers[i]._id] = rawUsers[i] 
         }
         for (let i = 0; i < outTransactions.length; i++) {
-            transactions.push({"id": outTransactions[i]._id,"date": new Date(outTransactions[i].date).toLocaleDateString("en-GB"), "amount": `-${outTransactions[i].amount}`, "username": users[`${outTransactions[i].destenationUserID}`].userName})
+            transactions.push({"id": outTransactions[i]._id,"date": new Date(outTransactions[i].date), "amount": `-${outTransactions[i].amount}`, "username": users[`${outTransactions[i].destenationUserID}`].userName})
         }
         for (let i = 0; i < inTransactions.length; i++) {
-            transactions.push({"id": inTransactions[i]._id,"date": new Date(inTransactions[i].date).toLocaleDateString("en-GB"), "amount": `+${inTransactions[i].amount}`, "username": users[`${inTransactions[i].sourceUserID}`].userName})
+            transactions.push({"id": inTransactions[i]._id,"date": new Date(inTransactions[i].date), "amount": `+${inTransactions[i].amount}`, "username": users[`${inTransactions[i].sourceUserID}`].userName})
         }
-        transactions.sort(function(a,b){return new Date(b.date) - new Date(a.date);});
+        transactions = transactions.sort(function(a,b){return b.date - a.date;});
+        console.log(transactions)
         res.render("home",{"session": req.session, "user": user, "transactions": transactions})
     }
     else{

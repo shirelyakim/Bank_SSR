@@ -40,7 +40,7 @@
                 <tbody id="transactionsTable">
                     <% for(var i = 0; i < transactions.length; i++) { %>
                     <tr>
-                        <td><%= transactions[i].date %></td>
+                        <td><%= transactions[i].date.toLocaleDateString("en-GB") %></td>
                         <td><%= transactions[i].username %></td>
                         <td><%= transactions[i].amount %>₪</td>
                     </tr>
