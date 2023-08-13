@@ -55,7 +55,7 @@ async function filter() {
     const toDateInput = document.getElementById("toDate");
 
     if (fromDateInput.value==="") {
-      fromDateInput.setCustosmValidity("Must insert");
+      fromDateInput.setCustomValidity("Must insert");
       fromDateInput.reportValidity();
       return false;
     } else {
@@ -79,28 +79,12 @@ async function filter() {
         toDateInput.setCustomValidity("To date must be bigger");
         toDateInput.reportValidity();
         return false;
-    } else {
-        birthDateInput.setCustomValidity("");
-        birthDateInput.reportValidity();
+    }
+    else{
+        toDateInput.setCustomValidity("");
+        toDateInput.reportValidity();
     }
 
-    const birthDate = new Date(birthDateInput.value);
-    const currentDate = new Date();
-
-    if (birthDate >= currentDate) {
-        birthDateInput.setCustomValidity("Birthdate must be smaller than current date");
-        birthDateInput.reportValidity();
-        return false;
-    } else {
-        birthDateInput.setCustomValidity("");
-        birthDateInput.reportValidity();
-    }
-
-<<<<<<< HEAD
-    console.log(birthDate);
-    console.log(currentDate);
-}
-=======
     let transactions = []
     let outTransactions
     let inTransactions
@@ -149,4 +133,3 @@ async function filter() {
         transactionsTableBody.appendChild(newRow);
     }
   }
->>>>>>> main
