@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <%- include('includes/imports') %>
+  <script src="assets/js/admin.js"></script>
+</head>
+<body>
+  <%- include('includes/nav') %>
+  <div class="container">
+    <div class="d-flex mt-3">
+      <a class="btn border-shadow update btn-light p-2" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newUserModal">
+        Create New User      </a>
+    </div>
+  </div>
+  <table class="table text-white">
+    <thead class="thead-light">
+    <tr>
+      <th>username</th>
+      <th>isAdmin</th>
+      <th>birthDate</th>
+      <th>joinDate</th>
+      <th>balance</th>
+      <th>actions</th>
+    </tr>
+    </thead>
+  <tbody id="usersTable">
+    <% for(var i = 0; i < users.length; i++) { %>
+    <tr>
+        <td><%= users[i].userName %></td>
+        <td><%= users[i].isAdmin %></td>
+        <td><%= users[i].birthDate %></td>
+        <td><%= users[i].joinDate %></td>
+        <td><%= users[i].balance %>₪</td>
+        <td>
+            <a id="edit" onClick="edit_click(this)" class="btn border-shadow update btn-light" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#editModal">
+                <i class="bi bi-pen"></i>
+            </a>
+            <a class="btn border-shadow update btn-light" role="button" aria-pressed="true">
+                <i class="bi bi-trash3"></i>
+            </a>
+        </td>
+    </tr>
+
+    <% } %>
+    </tbody>
+</table>
+</div>
+  
+</body>
+
+<!-- New User Modal -->
+<div class="modal" id="newUserModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Create New User</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form id="createUserForm" onsubmit="createUser(event)">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="userName" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="username" name="username" onkeyup="return validateUsername(this)" required>
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="mb-3">
+                  <label for="isAdmin" class="form-label">Is Admin?</label>
+                  <input type="checkbox" class="form-check-input" id="isAdmin" name="isAdmin">
+                </div>
+                <div class="mb-3">
+                  <label for="birthDate" class="form-label">Date of Birth</label>
+                  <input type="date" class="form-control" id="birthDate" name="birthDate" oninput="return validateDate(this)" required>
+                </div>
+                <!-- Add more form fields as needed -->
+                <button type="submit" class="btn btn-primary">Create User</button>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

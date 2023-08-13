@@ -50,38 +50,30 @@ async function newTransaction(event){
     }
 }
 
-function filter() {
-    const fromDateInput = document.getElementById("fromDate");
-    const toDateInput = document.getElementById("toDate");
-
-    if (fromDateInput.value==="") {
-      fromDateInput.setCustomValidity("Must insert");
-      fromDateInput.reportValidity();
-      return false;
-    } else {
-      fromDateInput.setCustomValidity("");
-      fromDateInput.reportValidity();
-    }
-  
-    if (toDateInput.value==="") {
-      toDateInput.setCustomValidity("Must insert");
-      toDateInput.reportValidity();
-      return false;
-    } else {
-      toDateInput.setCustomValidity("");
-      toDateInput.reportValidity();
-    }
-    const fromDate = new Date(fromDateInput.value)
-    const toDate = new Date(toDateInput.value)
-    if (fromDate >= toDate){
-        toDateInput.setCustomValidity("To date must be bigger");
-        toDateInput.reportValidity();
+function validateDate() {
+    const birthDateInput = document.getElementById("birthDate");
+    
+    if (birthDateInput.value === "") {
+        birthDateInput.setCustomValidity("Must insert");
+        birthDateInput.reportValidity();
         return false;
+    } else {
+        birthDateInput.setCustomValidity("");
+        birthDateInput.reportValidity();
     }
-    else{
-        toDateInput.setCustomValidity("");
-        toDateInput.reportValidity();
+
+    const birthDate = new Date(birthDateInput.value);
+    const currentDate = new Date();
+
+    if (birthDate >= currentDate) {
+        birthDateInput.setCustomValidity("Birthdate must be smaller than current date");
+        birthDateInput.reportValidity();
+        return false;
+    } else {
+        birthDateInput.setCustomValidity("");
+        birthDateInput.reportValidity();
     }
-    console.log(toDate)
-    console.log(fromDate)
-  }
+
+    console.log(birthDate);
+    console.log(currentDate);
+}
