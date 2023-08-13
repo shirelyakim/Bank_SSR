@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('includes/imports') %>
+        <script src="assets/js/home.js"></script>
+    </head>
+    <body>
+        <%- include('includes/nav') %>
+        <div class="content">
+            <table class="table text-white">
+                <thead class="thead-light">
+                <tr>
+                  <th>Date</th>
+                  <th>From Username</th>
+                  <th>To Username</th>
+                  <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody id="transactionsTable">
+                    <% for(var i = 0; i < transactions.length; i++) { %>
+                    <tr>
+                        <td><%= transactions[i].date.toLocaleDateString("en-GB") %></td>
+                        <td><%= transactions[i].fromusername %></td>
+                        <td><%= transactions[i].tousername %></td>
+                        <td><%= transactions[i].amount %>₪</td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

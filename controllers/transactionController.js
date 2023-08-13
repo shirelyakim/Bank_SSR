@@ -88,8 +88,6 @@ exports.get = async (req, res) => {
       if (query.destenationUserID) {
         parsedQuery['destenationUserID'] = query.destenationUserID;
       }
-      console.log(`searching transactions: ${JSON.stringify(parsedQuery)}`);
-
       transactions = await transactionModel.find(parsedQuery);
     }
 

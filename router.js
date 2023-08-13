@@ -54,7 +54,6 @@ route.get('/', async (req, res) => {
             transactions.push({"id": inTransactions[i]._id,"date": new Date(inTransactions[i].date), "amount": `+${inTransactions[i].amount}`, "username": users[`${inTransactions[i].sourceUserID}`].userName})
         }
         transactions = transactions.sort(function(a,b){return b.date - a.date;});
-        console.log(transactions)
         res.render("home",{"session": req.session, "user": user, "transactions": transactions})
     }
     else{
@@ -81,5 +80,62 @@ route.get('/admin', async (req, res) => {
         res.redirect("login")
     }
 });
+
+
+route.get('/admin/transactions', async (req, res) => {
+    if (!req.session.user_id) {
+    return res.redirect('/login'); // Redirect to login if user not authenticated
+    }
+    if (!req.session.admin) {
+        return res.redirect('/'); // Redirect to login if user not authenticated
+    }
+    const users = {};
+    let rawUsers = (await axios.get('http://localhost:5000/api/users')).data;
+    for (let i = 0; i < rawUsers.length; i++) {
+    users[rawUsers[i]._id] = rawUsers[i];
+    }
+
+    let transactions = [];
+    const query = req.query;
+
+    if (query.userId) {
+        console.log("test")
+    const outTransactions = await axios.get(`http://localhost:5000/api/transactions?sourceUserID=${query.userId}`);
+    const inTransactions = await axios.get(`http://localhost:5000/api/transactions?destinationUserID=${query.userId}`);
+
+    for (let i = 0; i < outTransactions.data.length; i++) {
+        transactions.push({
+        "id": outTransactions.data[i]._id,
+        "date": new Date(outTransactions.data[i].date),
+        "amount": outTransactions.data[i].amount,
+        "tousername": users[outTransactions.data[i].destenationUserID].userName,
+        "fromusername": users[outTransactions.data[i].sourceUserID].userName
+        });
+    }
+
+    for (let i = 0; i < inTransactions.data.length; i++) {
+        transactions.push({
+        "id": inTransactions.data[i]._id,
+        "date": new Date(inTransactions.data[i].date),
+        "amount": inTransactions.data[i].amount,
+        "tousername": users[inTransactions.data[i].destenationUserID].userName,
+        "fromusername": users[inTransactions.data[i].sourceUserID].userName
+        });
+    }
+    } else {
+    const rawTransactions = await axios.get('http://localhost:5000/api/transactions');
+    for (let i = 0; i < rawTransactions.data.length; i++) {
+        transactions.push({
+        "id": rawTransactions.data[i]._id,
+        "date": new Date(rawTransactions.data[i].date),
+        "amount": rawTransactions.data[i].amount,
+        "tousername": users[rawTransactions.data[i].destenationUserID].userName,
+        "fromusername": users[rawTransactions.data[i].sourceUserID].userName
+        });
+    }
+    }
+    transactions = transactions.sort(function(a,b){return b.date - a.date;});
+    res.render('transactions', { "session": req.session, "transactions": transactions });
+  });
 
 module.exports = route;
