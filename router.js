@@ -86,7 +86,7 @@ route.get('/admin/transactions', async (req, res) => {
     if (!req.session.user_id) {
     return res.redirect('/login'); // Redirect to login if user not authenticated
     }
-    if (!req.session.admin) {
+    if (req.session.admin!="true") {
         return res.redirect('/'); // Redirect to login if user not authenticated
     }
     const users = {};

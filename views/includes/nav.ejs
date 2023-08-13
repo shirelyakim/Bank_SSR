@@ -5,7 +5,7 @@
     <span>Bank SSR</span>
     </div>
     <ul>
-    <% if(session.admin) { %>
+    <% if(session.admin == "true") { %>
         <li><a href="/admin">Admin Dashboard</a></li>
     <% } %>
     <li><a href="/logout">Logout</a></li>
