@@ -1,15 +1,10 @@
-const user = require("../../models/user");
-
 async function validateUsername(element){
   const username = element.value;
-  valid = false
+  let user
   try {
       user = await axios.get(`http://localhost:5000/api/users?userName=${username}`);
-  } catch{
-    valid = true
-  }
-
-  if (valid){
+  } catch{}
+  if (!user){
       element.setCustomValidity("")
       element.reportValidity()
   }else{
@@ -63,11 +58,6 @@ function validateDate(element){
   }
 }
 
-async function deleteUser(user_id){
-  await axios.delete(`http://localhost:5000/api/users/${user_id}`)
-  window.location = "http://localhost:5000/admin";
-}
-
 async function editUserClick(user_id){
   const user = await axios.get(`http://localhost:5000/api/users/${user_id}`)
   const adminInput = document.getElementById("editIsAdmin");
@@ -84,7 +74,6 @@ async function editUserClick(user_id){
   }else{
     adminInput.checked = false
   }
-  console.log(user_id)
 }
 
 async function editUser(event){
