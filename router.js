@@ -99,6 +99,7 @@ route.get('/admin/transactions', async (req, res) => {
     }
 
     const users = {};
+    let specificUser
     const rawUsers = await axios.get('http://localhost:5000/api/users');
     for (const user of rawUsers.data) {
     users[user._id] = user;
@@ -108,6 +109,7 @@ route.get('/admin/transactions', async (req, res) => {
     const query = req.query;
 
     if (query.userId) {
+    specificUser = users[`${req.session.user_id}`].userName
     let outTransactions ;
     let inTransactions;
     try {outTransactions = await axios.get(`http://localhost:5000/api/transactions?sourceUserID=${query.userId}`);
@@ -150,7 +152,7 @@ route.get('/admin/transactions', async (req, res) => {
     }
 
     transactions.sort((a, b) => b.date - a.date);
-    res.render('transactions', { "session": req.session, "transactions": transactions });
+    res.render('transactions', { "session": req.session, "transactions": transactions, "specificUser": specificUser });
   });
   
   

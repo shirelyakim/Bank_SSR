@@ -8,30 +8,41 @@
 <body>
   <%- include('includes/nav') %>
   <div class="container">
-    <div class="d-flex mt-3">
+    <div class="col-8">
+      <h4 class="header"> Manage Users</h4>
+    </div>
+    <div class="d-flex mt-3 justify-content-end">
       <a class="btn border-shadow update btn-light p-2" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newUserModal" onclick="cleanModal()">Create New User</a>
     </div>
-    <table class="table table-striped">
+    <table class="table table-striped text-center">
       <thead class="thead-dark">
       <tr>
-        <th>username</th>
-        <th>isAdmin</th>
-        <th>birthDate</th>
-        <th>joinDate</th>
-        <th>disabled</th>
-        <th>balance</th>
-        <th>actions</th>
+        <th>Username</th>
+        <th>Joining Date</th>
+        <th>Birth Date</th>
+        <th>Balance</th>
+        <th>Is Admin?</th>
+        <th>Disabled?</th>
+        <th>Actions</th>
       </tr>
       </thead>
     <tbody id="usersTable">
       <% for(var i = 0; i < users.length; i++) { %>
       <tr>
           <td><%= users[i].userName %></td>
-          <td><%= users[i].isAdmin %></td>
-          <td><%= new Date(users[i].birthDate).toLocaleDateString("en-GB") %></td>
           <td><%= new Date(users[i].joinDate).toLocaleDateString("en-GB") %></td>
-          <td><%= users[i].disabled %></td>
+          <td><%= new Date(users[i].birthDate).toLocaleDateString("en-GB") %></td>
           <td><%= users[i].balance %>₪</td>
+          <% if(users[i].isAdmin) { %>
+            <td><input type="checkbox" checked="true" style="pointer-events:none;"></td>
+          <%} else { %>
+            <td><input type="checkbox" style="pointer-events:none;"></td>
+          <% } %>
+          <% if(users[i].disabled) { %>
+            <td><input type="checkbox" checked="true" style="pointer-events:none;"></td>
+          <%} else { %>
+            <td><input type="checkbox" style="pointer-events:none;"></td>
+          <% } %>
           <td>
               <a id="edit" onClick="editUserClick('<%= users[i]._id %>')" class="btn border-shadow update btn-light" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#editUserModal">
                   <i class="bi bi-pen"></i>

@@ -7,7 +7,15 @@
     <body>
         <%- include('includes/nav') %>
         <div class="content">
-            <table class="table table-striped">
+            <div class="col-8">
+                <% if(specificUser) { %>
+                    <h4 class="header"> Transactions of <%= specificUser %></h4>
+                <%} else { %>
+                    <h4 class="header"> All Transactions</h4>
+                <% } %>
+            </div>
+            <br>
+            <table class="table table-striped text-center">
                 <thead class="thead-dark">
                 <tr>
                   <th>Date</th>
