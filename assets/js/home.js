@@ -2,8 +2,13 @@ async function validateUsername(element){
     const username = element.value;
     try {
         user = await axios.get(`http://localhost:5000/api/users?userName=${username}`);
-        element.setCustomValidity("")
-        element.reportValidity()
+        if (user.data[0].disabled){
+            element.setCustomValidity("Username doesn't exists!")
+            element.reportValidity()
+        }else{
+            element.setCustomValidity("")
+            element.reportValidity()
+        }
     } catch{
         element.setCustomValidity("Username doesn't exists!")
         element.reportValidity()
@@ -133,3 +138,10 @@ async function filter() {
         transactionsTableBody.appendChild(newRow);
     }
   }
+
+function cleanModal(){
+const form = document.getElementById("createUserForm");
+document.getElementById("createSrc").checked = null;
+document.getElementById("createDst").value = null;
+document.getElementById("createAmount").value = null;
+}

@@ -6,8 +6,10 @@
     </div>
     <ul>
     <% if(session.admin) { %>
-        <li><a href="/admin">Admin Dashboard</a></li>
+        <li><a href="/admin/transactions">All Transactions</a></li>
+        <li><a href="/admin">Admin</a></li>
     <% } %>
     <li><a href="/logout">Logout</a></li>
+    <li><a href="" style="pointer-events: none">Hi, <%= session.username %></a></li>
     </ul>
 </nav>

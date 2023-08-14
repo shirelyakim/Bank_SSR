@@ -6,31 +6,27 @@
     </head>
     <body>
         <%- include('includes/nav') %>
-        <div class="content">
+        <div class="container">
             <div class="col-8">
-                <h1 class="slide-left">Welcome back <%= user.userName %> </h1>
-                <br>
-                <h2 class="slide-left"> Total Balance: <%= user.balance %>₪</h2>
-                <br>
+                <h3 class="slide-left"> Your Total Balance: <%= user.balance %>₪</h3>
+                <h4 class="header"> Your Transactions</h4>
             </div>
-            <div class="d-flex">
-              <div class="mb-3">
-              <label class="text-dark w-50">From Date:</label>
-              <input type="date" class="w-50" id="fromDate">
-             </div>
-             <div class="mb-3">
-              <label class="text-dark w-50">To Date:</label>
-              <input type="date" class="w-50" id="toDate">
+            <div class="d-flex justify-content-between bd-highlight mb-3">
+              <div class="p-2 bd-highlight">
+                <span class="text-dark">From Date:</span>
+                <input type="date" class="w-25" id="fromDate">
+                <span class="text-dark">To Date:</span>
+                <input type="date" class="w-25" id="toDate">
               </div>
-              <div class="mb-3">
-              <button class="btn btn-light update" onclick="filter()">filter</button>
-                <a class="btn border-shadow update btn-light p-2" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newTransaction">
+              <div class="p-2 bd-highlight">
+                <button class="btn btn-light update" onclick="filter()">filter</button>
+                <a class="btn border-shadow update btn-light p-2" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newTransaction" onclick="cleanModal()">
                   <i class="bi bi-file-earmark-plus"></i> 
                 </a>
               </div>
             </div>
-            <table class="table text-white">
-                <thead class="thead-light">
+            <table class="table table-striped text-center">
+                <thead class="thead-dark">
                 <tr>
                   <th>Date</th>
                   <th>Username</th>
@@ -65,14 +61,14 @@
             <form id="createTransaction" onsubmit="newTransaction(event)">
                 <div class="modal-body">
                     <input type="hidden" class="w-25" name="username" value=<%= user.userName %> required>
-                    <input type="hidden" class="w-25" name="src" value=<%= session.user_id %> required>
+                    <input type="hidden" class="w-25" id="createSrc" name="src" value=<%= session.user_id %> required>
                   <div class="mb-3"></div>
                     <label for="shortName" class="text-dark w-50">Username</label>
-                    <input type="text" class="w-25"  name="dst" onkeyup="return validateUsername(this)" placeholder="Username" required>
+                    <input type="text" class="w-25" id="createDst" name="dst" onkeyup="return validateUsername(this)" placeholder="Username" required>
                   </div>
                   <div class="mb-3">
                     <label for="shortName" class="text-dark w-50">Amount</label>
-                    <input type="number" class="w-25"  name="amount" onkeyup="return validateAmount(this)" placeholder="10" required>
+                    <input type="number" class="w-25" id="createAmount" name="amount" onkeyup="return validateAmount(this)" placeholder="10" required>
                   </div>
                 </div>
                 <div class="modal-footer">

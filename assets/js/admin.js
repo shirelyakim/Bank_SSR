@@ -1,3 +1,5 @@
+const user = require("../../models/user");
+
 async function validateUsername(element){
   const username = element.value;
   valid = false
@@ -39,6 +41,14 @@ async function createUser(event){
   }
 }
 
+function cleanModal(){
+  const form = document.getElementById("createUserForm");
+  document.getElementById("isAdmin").checked = false;
+  document.getElementById("username").value = null;
+  document.getElementById("password").value = null;
+  document.getElementById("birthDate").value = null;
+}
+
 function validateDate(element){
   const currentDate = new Date(); // Get the current date
 
@@ -51,5 +61,47 @@ function validateDate(element){
     element.setCustomValidity("");
     element.reportValidity();
   }
-  console.log("test")
+}
+
+async function deleteUser(user_id){
+  await axios.delete(`http://localhost:5000/api/users/${user_id}`)
+  window.location = "http://localhost:5000/admin";
+}
+
+async function editUserClick(user_id){
+  const user = await axios.get(`http://localhost:5000/api/users/${user_id}`)
+  const adminInput = document.getElementById("editIsAdmin");
+  const disabledInput = document.getElementById("editDisabled");
+  document.getElementById("editUserId").value = user_id;
+
+  if (user.data.disabled){
+    disabledInput.checked = true
+  }else{
+    disabledInput.checked = false
+  }
+  if (user.data.isAdmin){
+    adminInput.checked = true
+  }else{
+    adminInput.checked = false
+  }
+  console.log(user_id)
+}
+
+async function editUser(event){
+  event.preventDefault();
+  const isAdmin = document.getElementById("editIsAdmin").checked;
+  const disabled = document.getElementById("editDisabled").checked;
+  const user_id = document.getElementById("editUserId").value
+
+  try {
+      const response = await axios.post(`http://localhost:5000/api/users/${user_id}`, {
+      isAdmin: isAdmin,
+      disabled: disabled,
+      });
+
+      const responseData = response.data;
+      window.location = "http://localhost:5000/admin";
+  } catch (error) {
+      console.error(error);
+  }
 }
