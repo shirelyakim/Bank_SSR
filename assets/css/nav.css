@@ -3,8 +3,9 @@ nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 8%;
+    padding: 10px ;
     transition: 1s;
+    
 }
 
 nav .logo{
@@ -18,7 +19,7 @@ nav .logo{
 
 nav .logo img{
     width: 60px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 nav ul li{
@@ -44,3 +45,4 @@ nav:hover .logo{
 nav:hover ul li a{
     color: #333;
 }
+
