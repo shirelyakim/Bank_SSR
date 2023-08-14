@@ -6,13 +6,16 @@
   <script src="assets/js/admin.js"></script>
 </head>
 <body>
+    <link rel="stylesheet" href="/assets/css/global.css">
   <%- include('includes/nav') %>
   <div class="container">
     <div class="d-flex mt-3">
-      <a class="btn border-shadow update btn-light p-2" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newUserModal">Create New User</a>
-        <a href="/admin/transactions" class="btn border-shadow update btn-light p-2">All Transactions</a>
+        <link rel="stylesheet" href="assets/css/admin.css">
+            <a class="btn border-shadow update btn-light p-2" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newUserModal">Create New User</a>
+    <a href="/admin/transactions" class="btn border-shadow update btn-light p-2">All Transactions</a>
     </div>
   </div>
+  
   <table class="table text-white">
     <thead class="thead-light">
     <tr>
@@ -40,8 +43,10 @@
                 <i class="bi bi-trash3"></i>
             <a/>
             <a href="/admin/transactions?userId=<%= users[i]._id %>" class="btn border-shadow update btn-light" role="button" aria-pressed="true">
-              <i class="bi bi-arrow-bar-up"></i>
-          </a>
+                <i class="bi bi-arrow-right-circle"></i> 
+              </a>
+              
+              
         </td>
     </tr>
 

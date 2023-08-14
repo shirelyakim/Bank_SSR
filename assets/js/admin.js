@@ -53,3 +53,4 @@ function validateDate(element){
   }
   console.log("test")
 }
+

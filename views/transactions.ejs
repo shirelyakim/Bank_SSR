@@ -3,10 +3,26 @@
     <head>
         <%- include('includes/imports') %>
         <script src="assets/js/home.js"></script>
+
     </head>
     <body>
         <%- include('includes/nav') %>
         <div class="content">
+            <br>
+            <div class="d-flex">
+                <div class="mb-3">
+                <label class="text-dark w-50">From Date:</label>
+                <input type="date" class="w-50" id="fromDate">
+               </div>
+               <div class="mb-3">
+                <label class="text-dark w-50">To Date:</label>
+                <input type="date" class="w-50" id="toDate">
+                </div>
+                <div class="mb-3">
+                <button class="btn btn-light update" onclick="filter()">filter</button>
+                  </a>
+                </div>
+              </div>
             <table class="table text-white">
                 <thead class="thead-light">
                 <tr>
