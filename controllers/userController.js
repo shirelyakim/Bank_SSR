@@ -14,6 +14,7 @@ exports.create = async (req, res) => {
       birthDate: new Date(req.body.birthDate),
       joinDate: Date.now(),
       balance: 0,
+      disabled: false,
     });
 
     await user.save();
@@ -91,7 +92,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await userModel.findByIdAndDelete(id);
+    const data = await userModel.findByIdAndUpdate(id, {"disabled": true}, { useFindAndModify: false });
     if (!data) {
       return res.status(404).send({ message: `Cannot delete user with id` });
     }
@@ -107,9 +108,10 @@ exports.login = async (req, res) => {
   const password = req.body.password;
   try{
     const user = (await axios.get(`http://localhost:5000/api/users?userName=${username}`)).data[0]
-    if (user.password === password){
+    if (user.password === password && !user.disabled){
         req.session.user_id = user._id
         req.session.admin = user.isAdmin
+        req.session.username = user.userName
         res.status(200).send("OK")
     }
     else{

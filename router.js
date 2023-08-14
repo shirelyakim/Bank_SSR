@@ -74,6 +74,11 @@ route.get('/admin', async (req, res) => {
     if (req.session.user_id){
         if (req.session.admin) {
         let users = (await axios.get("http://localhost:5000/api/users")).data;
+        for (let i = 0; i < users.length; i++) {
+            if (users[i]._id === req.session.user_id){
+                users.splice(i,1);
+            }
+        }
         res.render("admin",{"session": req.session, "users": users});
         }else{
             res.redirect("/");

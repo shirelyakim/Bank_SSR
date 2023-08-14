@@ -26,6 +26,10 @@ let userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  disabled: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('user', userSchema);
