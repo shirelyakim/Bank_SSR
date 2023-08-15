@@ -24,7 +24,7 @@ async function validateUsername(element){
 function validateAmount(element){
     const amount = element.value;
     if (amount<=0){
-        element.setCustomValidity("Amount must be bigger then 0!")
+        element.setCustomValidity("Amount must be higher than 0!")
         element.reportValidity()
     }else{
         element.setCustomValidity("")
