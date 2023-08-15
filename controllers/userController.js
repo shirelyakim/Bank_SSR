@@ -32,7 +32,7 @@ exports.getId = async (req, res) => {
     const user = await userModel.findById(id);
 
     if (!user) {
-      return res.status(404).send({ message: `Not found user with id` });
+      return res.status(404).send({ message: `Not found user with ID` });
     }
 
     res.send(user);

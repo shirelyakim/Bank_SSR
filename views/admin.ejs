@@ -22,7 +22,7 @@
         <th>Birth Date</th>
         <th>Balance</th>
         <th>Is Admin?</th>
-        <th>Disabled?</th>
+        <th>Invalid?</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -67,7 +67,7 @@
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Create New User</h4>
+          <h4 class="modal-title">Update User</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
@@ -76,16 +76,16 @@
             <form id="editUserForm" onsubmit="editUser(event)">
               <div class="modal-body">
                 <div class="mb-3">
-                  <label for="isAdmin" class="form-label">Is Admin?</label>
+                  <label for="isAdmin" class="form-label">Admin</label>
                   <input type="hidden" class="form-check-input" id="editUserId" name="editUserId">
                   <input type="checkbox" class="form-check-input" id="editIsAdmin" name="editIsAdmin">
                 </div>
                 <div class="mb-3">
-                  <label for="disabled" class="form-label">Disabled?</label>
+                  <label for="disabled" class="form-label">Invalid</label>
                   <input type="checkbox" class="form-check-input" id="editDisabled" name="EditDisabled">
                 </div>
                 <!-- Add more form fields as needed -->
-                <button type="submit" class="btn btn-primary">Update User</button>
+                <button type="submit" class="btn btn-primary">Update</button>
               </div>
             </form>
         </div>
@@ -108,11 +108,11 @@
             <div class="modal-body">
               <div class="mb-3">
                 <label for="userName" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" onkeyup="return validateUsername(this)" required>
+                <input type="text" class="form-control" id="username" name="username" onkeyup="return validateUsername(this)" placeholder="Username" required>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
               </div>
               <div class="mb-3">
                 <label for="isAdmin" class="form-label">Is Admin?</label>
@@ -123,7 +123,7 @@
                 <input type="date" class="form-control" id="birthDate" name="birthDate" oninput="return validateDate(this)" required>
               </div>
               <!-- Add more form fields as needed -->
-              <button type="submit" class="btn btn-primary">Create User</button>
+              <button type="submit" class="btn btn-primary">Create</button>
             </div>
           </form>
       </div>

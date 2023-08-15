@@ -17,12 +17,10 @@
                 <input type="date" class="w-25" id="fromDate">
                 <span class="text-dark">To Date:</span>
                 <input type="date" class="w-25" id="toDate">
+                <button class="btn btn-light update border" onclick="filter()">Filter</button>
               </div>
               <div class="p-2 bd-highlight">
-                <button class="btn btn-light update" onclick="filter()">filter</button>
-                <a class="btn border-shadow update btn-light p-2" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newTransaction" onclick="cleanModal()">
-                  <i class="bi bi-file-earmark-plus"></i> 
-                </a>
+                <a class="btn update btn-light border" role="button" aria-pressed="true" data-bs-toggle="modal" data-bs-target="#newTransaction" onclick="cleanModal()">New Transaction</a>
               </div>
             </div>
             <table class="table table-striped text-center">
@@ -47,40 +45,32 @@
     </body>
 <!-- The Modal -->
 <div class="modal" id="newTransaction">
-    <div class="modal-dialog">
-      <div class="modal-content">
-  
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">New Transaction</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-  
-        <!-- Modal body -->
-        <div class="modal-body">
-            <form id="createTransaction" onsubmit="newTransaction(event)">
-                <div class="modal-body">
-                    <input type="hidden" class="w-25" name="username" value=<%= user.userName %> required>
-                    <input type="hidden" class="w-25" id="createSrc" name="src" value=<%= session.user_id %> required>
-                  <div class="mb-3"></div>
-                    <label for="shortName" class="text-dark w-50">Username</label>
-                    <input type="text" class="w-25" id="createDst" name="dst" onkeyup="return validateUsername(this)" placeholder="Username" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="shortName" class="text-dark w-50">Amount</label>
-                    <input type="number" class="w-25" id="createAmount" name="amount" onkeyup="return validateAmount(this)" placeholder="10" required>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <div class="form-group">
-                      <button class="btn btn-danger update">Save</button>
-                  </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">New Transaction</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+          <form id="createTransaction" onsubmit="newTransaction(event)">
+            <div class="modal-body">
+              <input type="hidden" name="username" value=<%= user.userName %> required>
+              <input type="hidden" id="createSrc" name="src" value=<%= session.user_id %> required>
+              <div class="mb-3">
+                <label for="shortName" class="form-label">Username</label>
+                <input type="text" class="form-control" id="createDst" name="dst" onkeyup="return validateUsername(this)" placeholder="Username" required>
               </div>
-            </form>
-        </div>
-  
-        <!-- Modal footer -->
+              <div class="mb-3">
+                <label for="shortName" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="createAmount" name="amount" onkeyup="return validateAmount(this)" placeholder="Amount" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+          </form>
       </div>
     </div>
   </div>
+</div>
 </html>

@@ -50,7 +50,7 @@ function validateDate(element){
   const birthDate = new Date(element.value);
 
   if (birthDate >= currentDate) { // Compare birthdate with current date
-    element.setCustomValidity("Birthdate must be smaller than current date");
+    element.setCustomValidity("Birth date must be earlier than current date");
     element.reportValidity();
   } else {
     element.setCustomValidity("");
