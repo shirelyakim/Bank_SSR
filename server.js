@@ -21,7 +21,7 @@ app.use(bodyParser.json()).use(
 // set view engine
 app.set('view engine', 'ejs');
 
-app.use('/assets', express.static(path.resolve(__dirname, 'assets')));
+app.use('/public', express.static(path.resolve(__dirname, 'public')));
 
 app.use(session({
   secret : '1234',
