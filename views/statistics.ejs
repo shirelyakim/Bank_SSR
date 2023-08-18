@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bank SSR | Statistics</title>
+  <%- include('includes/imports') %>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.js"></script>
+  <script src="/assets/js/statistics.js"></script>
+</head>
+<body>
+  <%- include('includes/nav') %>
+  <div class="container">
+    <div class="col-8">
+      <h4 class="header"> Statistics</h4>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div style="height: 400px;">
+          <canvas id="balancePieChart"></canvas>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <div style="height: 400px;">
+          <canvas id="documentCountChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

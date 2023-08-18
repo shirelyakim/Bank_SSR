@@ -60,17 +60,8 @@ route.get('/', async (req, res) => {
     }
 });
 
-//#######Views#######
-route.get('/example', (req, res) => {
-    if (req.session.user_id){
-        res.render("example",{"session": req.session});
-    }
-    else{
-        res.redirect("login");
-    }
-});
 //###Admin#####
-route.get('/admin', async (req, res) => {
+route.get('/admin/users', async (req, res) => {
     if (req.session.user_id){
         if (req.session.admin) {
         let users = (await axios.get("http://localhost:5000/api/users")).data;
@@ -79,7 +70,7 @@ route.get('/admin', async (req, res) => {
                 users.splice(i,1);
             }
         }
-        res.render("admin",{"session": req.session, "users": users});
+        res.render("users",{"session": req.session, "users": users});
         }else{
             res.redirect("/");
         }
@@ -89,6 +80,18 @@ route.get('/admin', async (req, res) => {
     }
 });
 
+route.get('/admin/statistics', async (req, res) => {
+    if (req.session.user_id){
+        if (req.session.admin) {
+            res.render("statistics",{"session": req.session});
+        }else{
+            res.redirect("/");
+        }
+    }
+    else{
+        res.redirect("/login");
+    }
+});
 
 route.get('/admin/transactions', async (req, res) => {
     if (!req.session.user_id) {
@@ -154,7 +157,5 @@ route.get('/admin/transactions', async (req, res) => {
     transactions.sort((a, b) => b.date - a.date);
     res.render('transactions', { "session": req.session, "transactions": transactions, "specificUser": specificUser });
   });
-  
-  
 
 module.exports = route;

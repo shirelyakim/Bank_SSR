@@ -8,7 +8,7 @@
 body {
     width: 100%;
     height: 100vh;
-    background-image: url("/assets/img/BB.png");
+    background-image: url("/assets/img/background.png");
     background-position: center center;
     background-size: cover;
     overflow-x: hidden;
