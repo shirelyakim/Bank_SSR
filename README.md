@@ -1,3 +1,4 @@
+# Bank SSR
 ## Purpose and General Explanation
 The goal of this project is to create a website that helps people manage their bank accounts better. It will work like a virtual bank where users can do different things with their accounts. This project will be useful for bank managers, account holders, and people who want to send money to others. 
 ## User Types
