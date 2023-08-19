@@ -7,3 +7,4 @@ The goal of this project is to create a website that helps people manage their b
 In addition, they can send money to another person. 
 ### Processes, Arcitecture and Data Management
 ![alt text](https://github.com/shirelyakim/Bank_SSR/blob/main/readme/architecture.png?raw=true)
+The application is structured using the Model-View-Controller (MVC) architectural pattern, ensuring a clear separation between data handling, user interface, and application logic. The project provides different levels of access to different user roles and provides tailored functionalities to meet users' needs.
