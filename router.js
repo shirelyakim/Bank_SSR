@@ -14,7 +14,7 @@ route.get('/api/users', userController.get);
 route.post('/api/users/:id', userController.update);
 route.delete('/api/users/:id', userController.delete);
 
-// Transactions (is '/api/transactions' right? )
+// Transactions 
 route.post('/api/transactions', transactionController.create)
 route.get('/api/transactions/:id', transactionController.getId);
 route.get('/api/transactions', transactionController.get);

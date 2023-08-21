@@ -1,10 +1,11 @@
+/* Reset default styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-
+/* Styling for the container that holds the login form */
 .container {
     position: relative;
     width: 30%;
@@ -16,26 +17,31 @@
     text-align: center;
 }
 
+/* Styling for the logo container */
 .logo-container {
     margin-bottom: 20px;
 }
 
+/* Styling for the logo image */
 .logo {
     max-width: 30%;
     height: auto;
 }
 
+/* Styling for the heading */
 h2 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;
 }
 
+/* Styling for error messages */
 .error {
     color: red;
     margin-top: 10px;
 }
 
+/* Styling for input fields */
 input[type="text"],
 input[type="password"] {
     width: 100%;
@@ -46,11 +52,13 @@ input[type="password"] {
     transition: border-color 0.3s ease-in-out;
 }
 
+/* Styling for input fields when focused */
 input[type="text"]:focus,
 input[type="password"]:focus {
     border-color: #5e5d5d;
 }
 
+/* Styling for the submit button */
 input[type="submit"] {
     background-color: #007bff;
     color: #fff;
@@ -62,10 +70,12 @@ input[type="submit"] {
     width: 100%;
 }
 
+/* Styling for the submit button when hovered */
 input[type="submit"]:hover {
     background-color: #0056b3;
 }
 
+/* Additional logo styling */
 .logo {
     align-items: center;
     justify-content: center;
@@ -79,11 +89,13 @@ input[type="submit"]:hover {
     margin-top: 10px;
   }
   
+  /* Additional logo styling */
 .logo {
 margin-bottom: 30px;
 align-items: flex-start;
 }
   
+/* Styling for logo image within the logo container */
 .logo img {
 width: 60px;
 margin-bottom: 10px;

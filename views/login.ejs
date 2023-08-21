@@ -2,25 +2,33 @@
 <html>
 <head>
   <title>Bank SSR | Login</title>
-  <%- include('includes/imports') %>
-  <link rel="stylesheet" href="public/css/login.css">
+  <!-- Imports --> 
+  <%- include('includes/imports') %> 
+  <link rel="stylesheet" href="public/css/login.css"> 
   <script src="public/js/login.js"></script>
 </head>
 <body>
+  <!-- Logo Section -->
   <div class="logo" onclick="location.href='/'">
     <img src="/public/img/logo.png">
     <span id="bankName">Bank SSR</span>
   </div>
+  <!-- Login Form Section -->
   <div class="container">
     <h2>Login</h2>
     <form id="login-form" onsubmit="login(event)">
+      <!-- Username Input -->
       <label for="username">Username:</label>
       <input type="text" name="username" required>
 
+      <!-- Password Input -->
       <label for="password">Password:</label>
       <input type="password" name="password" required>
 
+      <!-- Submit Button -->
       <input  type="submit" value="Login">
+
+      <!-- Error Message -->
       <label id="error" class="error"></label>
     </form>
   </div>
