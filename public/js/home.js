@@ -151,7 +151,7 @@ async function filter() {
   }
 
 function cleanModal(){
-const form = document.getElementById("createUserForm");
+const form = document.getElementById("newTransaction");
 document.getElementById("createSrc").checked = null;
 document.getElementById("createDst").value = null;
 document.getElementById("createAmount").value = null;

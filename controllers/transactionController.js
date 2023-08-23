@@ -1,4 +1,4 @@
-const transactionModel = require('../models/transaction');
+const transactionModel = require('../models/transaction'); // Pointer to the transactions collection in the DB
 const axios = require("axios");
 
 exports.create = async (req, res) => {
@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
     let srcBalance
     let dstBalance 
     try {
-      // Fetch source account
+    //information about the sorce user:
       const src = await axios.get(`http://localhost:5000/api/users/${transaction.sourceUserID}`);
       srcBalance = src.data.balance;
 
@@ -28,7 +28,7 @@ exports.create = async (req, res) => {
     }
 
     try {
-      // Fetch destination account
+      //information about the destination user:
       const dst = await axios.get(`http://localhost:5000/api/users/${transaction.destenationUserID}`);
       dstBalance = dst.data.balance;
 
@@ -38,15 +38,20 @@ exports.create = async (req, res) => {
     }
     // Save the transaction
     await transaction.save();
+
+
+
+    // Update Balance- Post request
     try{
-    await axios.post(`http://localhost:5000/api/users/${transaction.sourceUserID}`, { balance: srcBalance - transaction.amount });
+    await axios.post(`http://localhost:5000/api/users/${transaction.sourceUserID}`, { balance: srcBalance - transaction.amount });  // the request body
     }catch (error) {
       console.log(error)
       return res.status(404).send("Couldn't update src users balance");
     }
     try{
-      await axios.post(`http://localhost:5000/api/users/${transaction.destenationUserID}`, { balance: dstBalance + transaction.amount });
+      await axios.post(`http://localhost:5000/api/users/${transaction.destenationUserID}`, { balance: dstBalance + transaction.amount }); // the request body
     }catch (error) {
+      console.log(error)
       return res.status(404).send("Couldn't update dst users balance");
     }
 
@@ -58,7 +63,9 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.getId = async (req, res) => {
+
+// Displaying a transaction according to its ID
+exports.getId = async (req, res) => {  
   try {
     const id = req.params.id;
     const transaction = await transactionModel.findById(id);
@@ -73,29 +80,30 @@ exports.getId = async (req, res) => {
   }
 };
 
-exports.get = async (req, res) => {
+//Displaying the entire transaction or according to a specific filter
+exports.get = async (req, res) => { 
   try {
-    const query = req.query;
+    const query = req.query;  //Retrieving the query data (after the question mark)
     let transactions;
 
-    if (Object.keys(query).length === 0) {
+    if (Object.keys(query).length === 0) { // user wants to retrieve all transactions.
       transactions = await transactionModel.find();
     } else {
-      const parsedQuery = {};
-      if (query.sourceUserID) {
-        parsedQuery['sourceUserID'] = query.sourceUserID;
+      const parsedQuery = {};  //empty json 
+      if (query.sourceUserID) {   //If there is filtering by sourceUserID
+        parsedQuery['sourceUserID'] = query.sourceUserID;  //add the key and its value
       }
-      if (query.destenationUserID) {
+      if (query.destenationUserID) { //If there is filtering by destenationUserID
         parsedQuery['destenationUserID'] = query.destenationUserID;
       }
-      transactions = await transactionModel.find(parsedQuery);
+      transactions = await transactionModel.find(parsedQuery);  
     }
 
     if (transactions.length === 0) {
       return res.status(404).send({ message: 'No transactions found with the given query' });
     }
 
-    res.send(transactions);
+    res.send(transactions);  
   } catch (err) {
     res.status(500).send({ message: 'Error retrieving transactions: ' + err.message });
   }

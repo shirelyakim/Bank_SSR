@@ -1,4 +1,4 @@
-const userModel = require('../models/user');
+const userModel = require('../models/user'); // Pointer to the users collection in the DB
 const axios = require('axios');
 
 exports.create = async (req, res) => {
@@ -50,11 +50,11 @@ exports.get = async (req, res) => {
       users = await userModel.find();
     } else {
       const parsedQuery = {};
-      if (query.userName) {
-        parsedQuery['userName'] = query.userName;
+      if (query.userName) {    //If there is filtering by username
+        parsedQuery['userName'] = query.userName;   //add the key and its value
       }
-      if (query.isAdmin) {
-        parsedQuery['isAdmin'] = query.isAdmin;
+      if (query.isAdmin) {   //If there is filtering by IsAdmin
+        parsedQuery['isAdmin'] = query.isAdmin; //add the key and its value
       }
 
       users = await userModel.find(parsedQuery);

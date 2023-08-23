@@ -21,4 +21,4 @@ let transactionSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('transaction', transactionSchema);
+module.exports = mongoose.model('transaction', transactionSchema); //Collection
