@@ -3,12 +3,11 @@ const axios = require("axios");
 
 exports.create = async (req, res) => {
   try {
-    // Validate request
     if (!req.body) {
       return res.status(400).send({ message: 'Content cannot be empty!' });
     }
 
-    // Create new transaction
+    // Create new transaction- init function
     const transaction = new transactionModel({
       sourceUserID: req.body.sourceUserID,
       destenationUserID: req.body.destenationUserID,

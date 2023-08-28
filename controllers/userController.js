@@ -77,9 +77,9 @@ exports.update = async (req, res) => {
     }
 
     const id = req.params.id;
-    const data = await userModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false });
+    const data = await userModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false }); //Return Updated Json (Document)
 
-    if (!data) {
+    if (!data) { // if ID not exist 
       return res.status(404).send({ message: `Cannot update user with id` });
     }
 
@@ -92,8 +92,8 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await userModel.findByIdAndUpdate(id, {"disabled": true}, { useFindAndModify: false });
-    if (!data) {
+    const data = await userModel.findByIdAndUpdate(id, {"disabled": true}, { useFindAndModify: false }); //Return Updated Json (Document)
+    if (!data) { // if ID not exist 
       return res.status(404).send({ message: `Cannot delete user with id` });
     }
 
@@ -107,10 +107,10 @@ exports.login = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   try{
-    const user = (await axios.get(`http://localhost:5000/api/users?userName=${username}`)).data[0]
+    const user = (await axios.get(`http://localhost:5000/api/users?userName=${username}`)).data[0]  
     if (user.password === password && !user.disabled){
-        req.session.user_id = user._id
-        req.session.admin = user.isAdmin
+        req.session.user_id = user._id 
+        req.session.admin = user.isAdmin 
         req.session.username = user.userName
         res.status(200).send("OK")
     }
