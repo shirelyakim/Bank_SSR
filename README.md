@@ -18,7 +18,7 @@ The application's login page
 ![alt text](https://github.com/shirelyakim/Bank_SSR/blob/main/readme/home.png?raw=true) <br />
 The application's home page. It presents the user's transactions and its account balance. 
 The user can filter the transactions by selecting  date ranges.
-He can perform new transaction by pushing the button in the top corner.
+He can perform new transaction by clicking the button at the top corner.
 ![alt text](https://github.com/shirelyakim/Bank_SSR/blob/main/readme/home_form.png?raw=true) <br />
 Fill in the Username and the amount to create transaction and submit the form.
 ### Admin Interface
@@ -27,7 +27,7 @@ Fill in the Username and the amount to create transaction and submit the form.
 Showing all the transactions made in the bank by all its' users.
 #### User Management
 ![alt text](https://github.com/shirelyakim/Bank_SSR/blob/main/readme/manage_users.png?raw=true) <br />
-The users found in the system. It's possible to edit the user permissions, and view all hes' transactions.
+The users found in the system. It's possible to edit the user permissions, and view all its transactions.
 The users' transactions will be shown on a different page by clicking on the arrow icon. This is how the page looks like: 
 ![alt text](https://github.com/shirelyakim/Bank_SSR/blob/main/readme/all_user_transactions.png?raw=true) <br />
 The users' permissions can be edited by clicking on the penciel icon. This is how the form looks like:

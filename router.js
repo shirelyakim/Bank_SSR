@@ -33,6 +33,7 @@ route.get('/logout', userController.logout);
 
 route.get('/', async (req, res) => {
     if (req.session.user_id){
+                // Fetch user and transaction data using Axios
         let transactions = [];
         let user = (await axios.get(`http://localhost:5000/api/users/${req.session.user_id}`)).data
         let outTransactions;
@@ -41,21 +42,27 @@ route.get('/', async (req, res) => {
         } catch {outTransactions = [];}
         try{ inTransactions = (await axios.get(`http://localhost:5000/api/transactions?destenationUserID=${req.session.user_id}`)).data
         } catch {inTransactions = [];}
+         // Fetch users data to create a dictionary for user information
         var users = {};
         let rawUsers = (await axios.get(`http://localhost:5000/api/users`)).data
         for (let i = 0; i < rawUsers.length; i++) {
             users[rawUsers[i]._id] = rawUsers[i];
         }
+        // Process transactions data
         for (let i = 0; i < outTransactions.length; i++) {
             transactions.push({"id": outTransactions[i]._id,"date": new Date(outTransactions[i].date), "amount": `-${outTransactions[i].amount}`, "username": users[`${outTransactions[i].destenationUserID}`].userName});
         }
         for (let i = 0; i < inTransactions.length; i++) {
             transactions.push({"id": inTransactions[i]._id,"date": new Date(inTransactions[i].date), "amount": `+${inTransactions[i].amount}`, "username": users[`${inTransactions[i].sourceUserID}`].userName});
         }
+         // Sort transactions by date
         transactions = transactions.sort(function(a,b){return b.date - a.date;});
+        // Render the "home" template with relevant data
         res.render("home",{"session": req.session, "user": user, "transactions": transactions});
     }
     else{
+    // If not logged in, redirect to the login page
+
         res.redirect("/login");
     }
 });
