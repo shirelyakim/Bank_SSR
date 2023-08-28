@@ -89,7 +89,7 @@ async function editUser(event){
       });
 
       const responseData = response.data;
-      window.location = "http://localhost:5000/admin";
+      window.location = "http://localhost:5000/admin/users";
   } catch (error) {
       console.error(error);
   }
